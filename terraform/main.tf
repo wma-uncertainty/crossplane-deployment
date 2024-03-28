@@ -1,18 +1,10 @@
 terraform {
   backend "s3" {
-    bucket = "uncertainty-crossplane-tfstate"
+    bucket = "uncertainty-tfstate"
     key    = "terraform"
     region = "us-west-2"
   }
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.8"
-    }
-  }
 }
-
 
 
 provider "aws" {
@@ -20,10 +12,12 @@ provider "aws" {
   default_tags { tags = var.aws_tags }
 }
 
+
 data "aws_vpc" "default" {
   default = var.aws_vpc.default
   id      = var.aws_vpc.id
 }
+
 
 data "aws_subnets" "default" {
   filter {
@@ -31,4 +25,3 @@ data "aws_subnets" "default" {
     values = [data.aws_vpc.default.id]
   }
 }
-

@@ -11,8 +11,12 @@ aws_tags = {
 
 aws_vpc = {
   default = false
-  id = "vpc-0af42fd592a1efc5b"
+  id      = "vpc-0af42fd592a1efc5b"
 }
+
+aws_lb_vpc = "vpc-0055752230db6161d"
+
+route53_zone_id = "Z0397660PCRA6NSWUDHX"
 
 permissions_boundary = "arn:aws:iam::807615458658:policy/csr-Developer-Permissions-Boundary"
 

@@ -33,10 +33,24 @@ variable "aws_vpc" {
   type = map(string)
   default = {
     default = true
-    id = null
+    id      = null
   }
   description = <<-EOT
-  (Optional) AWS VPC configuration.
+  (Optional) AWS VPC in which to deploy cluster.
+  EOT
+}
+
+variable "aws_lb_vpc" {
+  type        = string
+  description = <<-EOT
+  (Optional) AWS Public VPC in which to deploy loadbalancer.
+  EOT
+}
+
+variable "route53_zone_id" {
+  type        = string
+  description = <<-EOT
+  (Optional) AWS Route53 hosted zone ID for DNS. 
   EOT
 }
 
@@ -52,7 +66,7 @@ variable "capacity_type" {
   description = <<-EOT
   Whether to use ON_DEMAND or SPOT instances.
   EOT
-  
+
   validation {
     condition     = contains(["ON_DEMAND", "SPOT"], var.capacity_type)
     error_message = "The capcity_type value must be ON_DEMAND or SPOT."
@@ -78,5 +92,43 @@ variable "cert_manager_version" {
   default     = "1.9.1"
   description = <<-EOT
   Version of cert-manager helm chart to install.
+  EOT
+}
+
+variable "nginx_ingress_version" {
+  default     = "4.2.5"
+  description = <<-EOT
+  Version of the prometheus helm chart to install
+  EOT
+}
+
+variable "prometheus_version" {
+  default     = "15.12.0"
+  description = <<-EOT
+  Version of the prometheus helm chart to install
+  EOT
+}
+
+variable "prometheus_disk_size" {
+  default     = "16Gi"
+  description = <<-EOT
+  Amount of space to allocate to the disk storing prometheus metrics.
+  EOT
+}
+
+variable "prometheus_metrics_retention_days" {
+  default     = 180
+  type        = number
+  description = <<-EOT
+  Number of days to retain all prometheus metrics for
+  EOT
+}
+
+variable "prometheus_hostname" {
+  default     = ""
+  description = <<-EOT
+  The DNS host at which the prometheus server should be reachable.
+
+  Is just passed along to prometheus.server.ingress.hosts.
   EOT
 }
