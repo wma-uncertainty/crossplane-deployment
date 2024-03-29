@@ -49,11 +49,10 @@ resource "aws_iam_openid_connect_provider" "cluster_oidc" {
   url             = data.tls_certificate.cluster_oidc_certificate.url
 }
 
-
 module "cluster_autoscaler_irsa" {
   source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 
-  role_name = "${var.cluster_name}_cluster_autoscaler"
+  role_name                     = "${var.cluster_name}_cluster_autoscaler"
   role_permissions_boundary_arn = var.permissions_boundary
 
   attach_cluster_autoscaler_policy = true
@@ -70,4 +69,3 @@ module "cluster_autoscaler_irsa" {
     }
   }
 }
-

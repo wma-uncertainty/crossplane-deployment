@@ -12,7 +12,6 @@ provider "helm" {
   }
 }
 
-
 resource "helm_release" "autoscaler" {
   name             = "cluster-autoscaler"
   repository       = "https://kubernetes.github.io/autoscaler"
@@ -44,7 +43,6 @@ resource "helm_release" "autoscaler" {
   ]
 }
 
-
 resource "helm_release" "crossplane" {
   name             = "crossplane"
   repository       = "https://charts.crossplane.io/stable"
@@ -74,7 +72,6 @@ resource "helm_release" "crossplane" {
     aws_eks_cluster.cluster
   ]
 }
-
 
 resource "helm_release" "prometheus" {
   name             = "prometheus"
@@ -134,17 +131,16 @@ resource "helm_release" "prometheus" {
   ]
 }
 
-
-resource "helm_release" "ingress" {
-  name             = "ingress"
-  repository       = "https://kubernetes.github.io/ingress-nginx"
-  chart            = "ingress-nginx"
-  namespace        = "support"
-  create_namespace = true
-  version          = var.nginx_ingress_version
-
-  wait = true
-  depends_on = [
-    aws_eks_cluster.cluster
-  ]
-}
+#resource "helm_release" "ingress" {
+#  name             = "ingress"
+#  repository       = "https://kubernetes.github.io/ingress-nginx"
+#  chart            = "ingress-nginx"
+#  namespace        = "support"
+#  create_namespace = true
+#  version          = var.nginx_ingress_version
+#
+#  wait = true
+#  depends_on = [
+#    aws_eks_cluster.cluster
+#  ]
+#}
