@@ -1,7 +1,7 @@
 # Default USGS pangeo-forge bakery
 region = "us-west-2"
 
-cluster_name = "uncertainty_ts"
+cluster_name = "uncertainty"
 
 aws_tags = {
   "wma:project_id"     = "uncertainty_ts"
