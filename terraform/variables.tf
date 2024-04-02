@@ -40,10 +40,10 @@ variable "aws_vpc" {
   EOT
 }
 
-variable "aws_lb_vpc" {
+variable "aws_lb_subnet" {
   type        = string
   description = <<-EOT
-  (Optional) AWS Public VPC in which to deploy loadbalancer.
+  (Optional) AWS Public subnet in which to deploy loadbalancer.
   EOT
 }
 

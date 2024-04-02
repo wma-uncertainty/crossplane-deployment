@@ -14,7 +14,7 @@ aws_vpc = {
   id      = "vpc-0af42fd592a1efc5b"
 }
 
-aws_lb_vpc = "vpc-0055752230db6161d"
+aws_lb_subnet = "subnet-08f1118dd59133513"
 
 route53_zone_id = "Z0397660PCRA6NSWUDHX"
 
