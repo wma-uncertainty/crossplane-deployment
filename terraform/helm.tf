@@ -131,16 +131,65 @@ resource "helm_release" "autoscaler" {
 #  ]
 #}
 
-resource "helm_release" "ingress" {
-  name             = "ingress"
-  repository       = "https://kubernetes.github.io/ingress-nginx"
-  chart            = "ingress-nginx"
-  namespace        = "support"
+# install AWS Load Balancer Controller
+# https://github.com/aws/eks-charts/blob/master/stable/aws-load-balancer-controller/values.yaml
+# lots of good tips at 
+# https://artifacthub.io/packages/helm/aws/aws-load-balancer-controller
+resource "helm_release" "aws_load_balancer_controller" {
+  name             = "aws-load-balancer-controller"
+  repository       = "https://aws.github.io/eks-charts"
+  chart            = "aws-load-balancer-controller"
+  namespace        = "kube-system"
   create_namespace = true
-  version          = var.nginx_ingress_version
+  version          = var.aws_load_balancer_controller_version
+
+  set {
+    name  = "clusterName"
+    value = var.cluster_name
+  }
+
+  set {
+    name  = "region"
+    value = var.region
+  }
+
+  set {
+    name  = "vpcId"
+    value = data.aws_vpc.default.id
+  }
+
+  set {
+    name  = "serviceAccount.create"
+    value = "false"
+  }
+
+  set {
+    name  = "serviceAccount.name"
+    value = aws_iam_role.cluster_control_plane.name
+  }
+
+  set {
+    name  = "serviceAccount.annotations.eks.amazonaws.com/role-arn"
+    value = aws_iam_role.cluster_control_plane.arn
+  }
 
   wait = true
+
   depends_on = [
     aws_eks_cluster.cluster
   ]
 }
+
+#resource "helm_release" "ingress" {
+#  name             = "ingress"
+#  repository       = "https://kubernetes.github.io/ingress-nginx"
+#  chart            = "ingress-nginx"
+#  namespace        = "support"
+#  create_namespace = true
+#  version          = var.nginx_ingress_version
+#
+#  wait = true
+#  depends_on = [
+#    aws_eks_cluster.cluster
+#  ]
+#}

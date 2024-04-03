@@ -102,6 +102,13 @@ variable "nginx_ingress_version" {
   EOT
 }
 
+variable "aws_load_balancer_controller_version" {
+  default     = "1.7.2"
+  description = <<-EOT
+  Version of the AWS Load Balancer Controller helm chart to install
+  EOT
+}
+
 variable "prometheus_version" {
   default     = "15.12.0"
   description = <<-EOT
