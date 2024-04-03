@@ -29,47 +29,48 @@ resource "aws_security_group" "ingress_nginx_external" {
 
 }
 
-resource "kubernetes_service" "ingress" {
-  metadata {
-    name = "ingress-service"
-  }
-  spec {
-    port {
-      port        = 80
-      target_port = 80
-      protocol    = "TCP"
-    }
-    type = "NodePort"
-  }
-  # Might also want this
-  #depends_on = [
-  #  aws_eks_cluster.cluster
-  #]
-}
-
-resource "kubernetes_ingress" "ingress" {
-  wait_for_load_balancer = true
-  metadata {
-    name = "ingress"
-    annotations = {
-      "kubernetes.io/ingress.class" = "nginx"
-    }
-  }
-  spec {
-    rule {
-      http {
-        path {
-          path = "/*"
-          backend {
-            service_name = kubernetes_service.ingress.metadata.0.name
-            service_port = 80
-          }
-        }
-      }
-    }
-  }
-}
-
+#resource "kubernetes_service" "ingress" {
+#  metadata {
+#    name = "ingress-service"
+#  }
+#  spec {
+#    port {
+#      port        = 80
+#      target_port = 80
+#      protocol    = "TCP"
+#    }
+#    type = "NodePort"
+#  }
+#
+#  # Might also want this
+#  depends_on = [
+#    aws_eks_cluster.cluster
+#  ]
+#}
+#
+#resource "kubernetes_ingress" "ingress" {
+#  wait_for_load_balancer = true
+#  metadata {
+#    name = "ingress"
+#    annotations = {
+#      "kubernetes.io/ingress.class" = "nginx"
+#    }
+#  }
+#  spec {
+#    rule {
+#      http {
+#        path {
+#          path = "/*"
+#          backend {
+#            service_name = kubernetes_service.ingress.metadata.0.name
+#            service_port = 80
+#          }
+#        }
+#      }
+#    }
+#  }
+#}
+#
 data "aws_route53_zone" "selected" {
   zone_id = var.route53_zone_id
 }
@@ -98,7 +99,7 @@ resource "aws_lb" "public_lb" {
   #subnets            = [for subnet in data.aws_subnet.public : subnet.id]
   subnets = [data.aws_subnet.public.id]
 
-  enable_deletion_protection = true
+  enable_deletion_protection = false
 
   tags = {
     Environment = "development"

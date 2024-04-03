@@ -131,16 +131,16 @@ resource "helm_release" "autoscaler" {
 #  ]
 #}
 
-#resource "helm_release" "ingress" {
-#  name             = "ingress"
-#  repository       = "https://kubernetes.github.io/ingress-nginx"
-#  chart            = "ingress-nginx"
-#  namespace        = "support"
-#  create_namespace = true
-#  version          = var.nginx_ingress_version
-#
-#  wait = true
-#  depends_on = [
-#    aws_eks_cluster.cluster
-#  ]
-#}
+resource "helm_release" "ingress" {
+  name             = "ingress"
+  repository       = "https://kubernetes.github.io/ingress-nginx"
+  chart            = "ingress-nginx"
+  namespace        = "support"
+  create_namespace = true
+  version          = var.nginx_ingress_version
+
+  wait = true
+  depends_on = [
+    aws_eks_cluster.cluster
+  ]
+}
