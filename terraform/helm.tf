@@ -135,8 +135,8 @@ resource "helm_release" "autoscaler" {
 # https://github.com/aws/eks-charts/blob/master/stable/aws-load-balancer-controller/values.yaml
 # lots of good tips at 
 # https://artifacthub.io/packages/helm/aws/aws-load-balancer-controller
-resource "helm_release" "aws_load_balancer_controller" {
-  name             = "aws-load-balancer-controller"
+resource "helm_release" "ingress" {
+  name             = "ingress"
   repository       = "https://aws.github.io/eks-charts"
   chart            = "aws-load-balancer-controller"
   namespace        = "kube-system"
@@ -148,14 +148,23 @@ resource "helm_release" "aws_load_balancer_controller" {
     value = var.cluster_name
   }
 
+  #set {
+  #  name  = "region"
+  #  value = var.region
+  #}
+
+  #set {
+  #  name  = "vpcId"
+  #  value = data.aws_vpc.default.id
+  #}
   set {
-    name  = "region"
-    value = var.region
+    name  = "autoDiscoverAwsRegion"
+    value = "true"
   }
 
   set {
-    name  = "vpcId"
-    value = data.aws_vpc.default.id
+    name  = "autoDiscoverAwsVpcID"
+    value = "true"
   }
 
   set {

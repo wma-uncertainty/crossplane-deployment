@@ -1,5 +1,5 @@
 resource "aws_iam_role" "nodegroup" {
-  name = "${var.cluster_name}-nodegroup-role"
+  name                 = "${var.cluster_name}-nodegroup-role"
   permissions_boundary = var.permissions_boundary
 
   assume_role_policy = jsonencode({
@@ -44,7 +44,7 @@ resource "aws_eks_node_group" "core_nodes" {
   scaling_config {
     desired_size = 1
     max_size     = var.max_instances
-    min_size     = 0
+    min_size     = 1
   }
 
   lifecycle {
