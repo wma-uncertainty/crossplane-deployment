@@ -77,8 +77,9 @@ data "aws_route53_zone" "selected" {
 
 resource "aws_route53_record" "www" {
   zone_id = data.aws_route53_zone.selected.zone_id
-  name    = "www.${data.aws_route53_zone.selected.name}"
-  type    = "A"
+  name    = var.cluster_name
+  #name    = "www.${data.aws_route53_zone.selected.name}"
+  type = "A"
   alias {
     name                   = aws_lb.public_lb.dns_name
     zone_id                = aws_lb.public_lb.zone_id
@@ -112,8 +113,8 @@ resource "aws_lb" "public_lb" {
   internal           = true # maybe set to false if VPC has an internet gateway
   load_balancer_type = "network"
   ip_address_type    = "ipv4" # set to "dualstack" if subnets are IPv6 enabled
-  subnets            = [for subnet in data.aws_subnets.default.ids : subnet.id]
-  #subnets = data.aws_subnets.default.ids # InvalidConfigurationRequest: All subnets must belong to the same VPC: 'vpc-0055752230db6161d'
+  #subnets            = [for subnet in data.aws_subnets.default.ids : subnet.id]
+  subnets = data.aws_subnets.default.ids # InvalidConfigurationRequest: All subnets must belong to the same VPC: 'vpc-0055752230db6161d'
   #subnets = [data.aws_subnet.public.id]
 
   enable_deletion_protection = false
